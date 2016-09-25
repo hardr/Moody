@@ -6,8 +6,8 @@
 
 <h1>Moody.</h1>
 <h2>If you don't like the music, change your tone.</h2>
-<button onclick="startRecording(this);">record</button>
-  <button onclick="stopRecording(this);" disabled>stop</button>
+<button class="btn-success" onclick="startAuto(this);">record</button>
+  <button class="btn-danger" onclick="stopRecording(this);">stop</button>
 
   <h2>Recordings</h2>
   <ul id="recordingslist"></ul>
@@ -31,16 +31,19 @@
     recorder = new Recorder(input);
     __log('Recorder initialised.');
   }
+  //made by Derek
+  function startOnLoad () {
+    recorder && recorder.record();
+    __log('Recording...');
+
+  }
+
   function startRecording(button) {
     recorder && recorder.record();
-    button.disabled = true;
-    button.nextElementSibling.disabled = false;
     __log('Recording...');
   }
-  function stopRecording(button) {
+  function stopRecording() {
     recorder && recorder.stop();
-    button.disabled = true;
-    button.previousElementSibling.disabled = false;
     __log('Stopped recording.');
 
     // create WAV download link using audio data blob
@@ -83,6 +86,18 @@
       __log('No live audio input: ' + e);
     });
   };
+  function startAuto (button) {
+    recorder && recorder.record();
+    __log('Recording...');
+    setTimeout(timingQueue,5000)
+
+  }
+
+  function timingQueue () {
+    stopRecording();
+    setInterval(startRecording,5000)
+    setInterval(stopRecording,5000)
+  }
   </script>
 
   <script src="../js/recorder.js"></script>

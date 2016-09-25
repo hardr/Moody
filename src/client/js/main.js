@@ -31,6 +31,7 @@ this.onmessage = function(e){
 
 function init(config){
   sampleRate = config.sampleRate;
+  console.log('sampleRate',sampleRate);
 }
 
 function record(inputBuffer){
