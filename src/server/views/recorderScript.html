@@ -81,11 +81,12 @@ function startAuto (button) {
   setTimeout(timingQueue,5000)
 
 }
-
+timingQueue()
 function timingQueue () {
+  console.log('timing function');
   stopRecording();
-  setInterval(startRecording(this),5000)
-  setInterval(stopRecording(this),5000)
+  setInterval(startRecording(this),1000)
+  setInterval(stopRecording(this),1000)
 }
 </script>
 {% endblock %}
