@@ -7,8 +7,17 @@ body {
   height: 100%;
 }
 
+.carousel-item{
+  height: 625px;
+}
+
+.carousel-inner{
+  margin-top: -23px;
+}
+
 .navbar-custom,
 .footer-custom {
+  margin-bottom: -25px;
   background: #79589F;
   border-radius: 0;
   border: none;
