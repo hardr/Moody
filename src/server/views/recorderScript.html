@@ -71,32 +71,31 @@ window.onload = function init() {
     __log('No live audio input: ' + e);
   });
 };
-// function startAuto () {
-//   recorder && recorder.record();
-//   __log('Recording...');
-//   setTimeout(timingQueue,1000)
-// }
-// startAuto()
-//
-// timingQueue()
+var rawSampleSize = 30000;
 function timingQueue () {
   console.log('timing function');
-  setInterval(startStop,6000)
+  startRecording()
+  setTimeout(stopRecording,rawSampleSize);
+  setInterval(startStop,rawSampleSize + 100)
+  initRemoval();
   // setInterval(removeOne,6000)
 
 }
 
 function startStop () {
   startRecording();
-  setTimeout(stopRecording,5000);
-
+  setTimeout(stopRecording,rawSampleSize);
+}
+function initRemoval () {
+var removerTimer = setTimeout(intRem,rawSampleSize)
 }
 
-function intervalStop () {
-  setInterval(stopRecording,3000);
-};
+function intRem () {
+var removerInterval = setInterval(removeOne,rawSampleSize + 100)
+}
 
 function removeOne () {
   $('#recordingslist li').first().remove()
+  console.log('remove');
 }
 </script>
