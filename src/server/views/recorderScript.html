@@ -37,6 +37,7 @@ function stopRecording() {
 function createDownloadLink() {
   recorder && recorder.exportWAV(function(blob) {
     var url = URL.createObjectURL(blob);
+    console.log('url',url);
     var li = document.createElement('li');
     var au = document.createElement('audio');
     var hf = document.createElement('a');
@@ -70,17 +71,32 @@ window.onload = function init() {
     __log('No live audio input: ' + e);
   });
 };
-function startAuto (button) {
-  recorder && recorder.record();
-  __log('Recording...');
-  setTimeout(timingQueue,5000)
-
-}
-timingQueue()
+// function startAuto () {
+//   recorder && recorder.record();
+//   __log('Recording...');
+//   setTimeout(timingQueue,1000)
+// }
+// startAuto()
+//
+// timingQueue()
 function timingQueue () {
   console.log('timing function');
-  stopRecording();
-  setInterval(startRecording(this),1000)
-  setInterval(stopRecording(this),1000)
+  setInterval(startStop,6000)
+  // setInterval(removeOne,6000)
+
+}
+
+function startStop () {
+  startRecording();
+  setTimeout(stopRecording,5000);
+
+}
+
+function intervalStop () {
+  setInterval(stopRecording,3000);
+};
+
+function removeOne () {
+  $('#recordingslist li').first().remove()
 }
 </script>
