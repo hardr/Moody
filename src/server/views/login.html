@@ -1,0 +1,21 @@
+{% extends "_base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<div class="form-group row">
+  <label for="username" class="col-xs-2 col-form-label">Username</label>
+  <div class="col-xs-10">
+    <input class="form-control" type="text" value="MadEyeMoody" id="loginUsername">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="password" class="col-xs-2 col-form-label">Password</label>
+  <div class="col-xs-10">
+    <input class="form-control" type="password" value="Password" id="loginPassword">
+  </div>
+</div>
+<div class="col-sm-offset-2 col-sm-8">
+      <button type="submit" class="btn btn-default login">Login</button>
+    </div>
+{% endblock %}
