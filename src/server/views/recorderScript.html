@@ -1,9 +1,3 @@
-{% extends "_base.html" %}
-
-{% block title %}{% endblock %}
-
-{% block content %}
-
 <script>
 function __log(e, data) {
   log.innerHTML += "\n" + e + " " + (data || '');
@@ -55,6 +49,7 @@ function createDownloadLink() {
     li.appendChild(au);
     li.appendChild(hf);
     recordingslist.appendChild(li);
+
   });
 }
 window.onload = function init() {
@@ -89,4 +84,3 @@ function timingQueue () {
   setInterval(stopRecording(this),1000)
 }
 </script>
-{% endblock %}
