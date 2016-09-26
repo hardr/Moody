@@ -3,17 +3,21 @@
 {% block title %}{% endblock %}
 
 {% block content %}
-
+{% include "carousel.html" %}
+<div class="container-fluid">
 <h1>Moody.</h1>
 <h2>If you don't like the music, change your tone.</h2>
 <button class="btn-success" onclick="startAuto(this);">record</button>
   <button class="btn-danger" onclick="stopRecording(this);">stop</button>
 
-  <h2>Recordings</h2>
-  <ul id="recordingslist"></ul>
+    <h2>Recordings</h2>
+    <ul id="recordingslist"></ul>
 
-  <h2>Log</h2>
-  <pre id="log"></pre>
+
+    <h2>Log</h2>
+    <pre id="log"></pre>
+</div>
+
 
   <script>
   function __log(e, data) {
