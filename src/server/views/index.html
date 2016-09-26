@@ -95,8 +95,8 @@
 
   function timingQueue () {
     stopRecording();
-    setInterval(startRecording,5000)
-    setInterval(stopRecording,5000)
+    setInterval(startRecording(this),5000)
+    setInterval(stopRecording(this),5000)
   }
   </script>
 
