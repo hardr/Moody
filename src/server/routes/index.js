@@ -1,18 +1,15 @@
 const express = require('express');
 const router = express.Router();
-
 const indexController = require('../controllers/index');
+const beatDetector = require('../controllers/bpm-detector');
 
 router.get('/', function (req, res, next) {
   const renderObject = {};
-  renderObject.title = 'Welcome to Express!';
-  indexController.sum(1, 2, (error, results) => {
-    if (error) return next(error);
-    if (results) {
-      renderObject.sum = results;
-      res.render('index', renderObject);
-    }
+  const dectectBPM = beatDetector.detectBPM;
+  const filePath ="../test_audio/amclassical_beethoven_fur_elise.aac"
+  renderObject.title = 'Welcome to Moody';
+  var calcdBPM = dectectBPM(filePath);
+  res.render('index', renderObject);
   });
-});
 
 module.exports = router;
