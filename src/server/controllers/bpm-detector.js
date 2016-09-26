@@ -13,12 +13,9 @@ function detectBPM(filePath) {
   return bpmArray;
 };
 
-
-
-
-
 // needed to convert mp3 to proper format
 function createAudioStream(filePath) {
+  console.log("create audio stream filepath:" + filePath);
   var args = "-t raw -r 44100 -e float -c 1 -".split(" ");
   args.unshift(filePath);
   var sox = spawn("sox", args);
