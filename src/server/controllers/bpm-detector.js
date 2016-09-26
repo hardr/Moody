@@ -8,8 +8,10 @@ function detectBPM(filePath) {
   createAudioStream(filePath)
   .pipe(bpmSink())
   .on("bpm", function(bpm){
-    console.log("bpm is %d", bpm)
+    bpmArray.push(bpm)
+    // console.log("bpm is %d", bpm)
   })
+  return bpmArray;
 };
 
 
