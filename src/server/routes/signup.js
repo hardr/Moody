@@ -2,9 +2,8 @@ const express = require('express');
 const router = express.Router();
 const indexController = require('../controllers/index');
 const bcrypt = require('bcryptjs');
+const salt = bcrypt.genSaltSync(10);
 const knex = require('../db/knex');
-
-
 
 router.get('/', function (req, res, next) {
   const renderObject = {};
@@ -18,12 +17,22 @@ router.get('/', function (req, res, next) {
     const last_name = req.body.last_name;
     const email = req.body.email;
     const userName = req.body.userName;
-    console.log('post log',userName);
+    const password = req.body.password;
+    let hash = bcrypt.hashSync(password, salt);
+    console.log(hash);
+
     knex('users')
-    .insert({first_name:first_name, last_name: last_name, email: email, userName: userName})
-    .then((newUser) => res.redirect('/'))
+    .insert({
+      first_name:first_name,
+      last_name: last_name,
+      email: email,
+      userName: userName,
+      password: hash})
+    .then((newUser) => {
+
+      res.send(newUser);
+    })
     .catch((err) => {
-      console.log(err);
       res.send('Error');
     });
   });

@@ -5,18 +5,24 @@
 {% block content %}
 {% include "carousel.html" %}
 {% include "recorderScript.html" %}
+{% include "encoder.html" %}
+
   <div class="container-fluid">
     <h1>Moody.</h1>
     <h2>If you don't like the music, change your tone.</h2>
     <button class="btn-success" onclick="timingQueue(this);">record</button>
-    <button class="btn-danger" onclick="stopRecording(this);">stop</button>
+    <input id="com-file-analyzer-fileinput" autofocus="" type="file">
+
 
     <h2>Recordings</h2>
     <ul id="recordingslist"></ul>
+    <progress style="display: inline-block; text-align: center; width: 100%;" value="0" max="100">Your browser does not support this tool. Upgrade to a modern browser, please.</progress>
+
     <h2>Log</h2>
     <pre id="log"></pre>
   </div>
   <button type="submit" class="btn btn-warning" id="bpmSubmit">Analyze BPM!</button>
+
 
   {% include "youtubePlayer.html" %}
 
@@ -25,4 +31,6 @@
 {% block scripts %}
   <script src="../js/recorder.js"></script>
   <script type="text/javascript" src="/js/return-recording.js"></script>
+  <script src="../js/flac.js"></script>
+
 {% endblock %}
