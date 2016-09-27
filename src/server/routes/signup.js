@@ -5,8 +5,6 @@ const bcrypt = require('bcryptjs');
 const salt = bcrypt.genSaltSync(10);
 const knex = require('../db/knex');
 
-
-
 router.get('/', function (req, res, next) {
   const renderObject = {};
   renderObject.title = 'Sign Up - Welcome to Moody!';
@@ -24,7 +22,12 @@ router.get('/', function (req, res, next) {
     console.log(hash);
 
     knex('users')
-    .insert({first_name:first_name, last_name: last_name, email: email, userName: userName, password: hash})
+    .insert({
+      first_name:first_name,
+      last_name: last_name,
+      email: email,
+      userName: userName,
+      password: hash})
     .then((newUser) => {
 
       res.send(newUser);
