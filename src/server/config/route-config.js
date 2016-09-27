@@ -12,7 +12,7 @@
     // *** register routes *** //
     app.use('/', routes);
     app.use('/login', login);
-    app.use('/signup', signup)
+    app.use('/signup', signup);
 
   };
 
