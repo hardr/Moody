@@ -8,9 +8,7 @@ let bcrypt = require('bcryptjs');
 router.get('/', function (req, res, next) {
   const renderObject = {};
   renderObject.title = 'Log In - Welcome Back!';
-    res.redirect('index', renderObject);
+    res.render('login',renderObject);
   });
-
-
 
 module.exports = router;
