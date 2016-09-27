@@ -93,8 +93,10 @@ function main (inputFile, callback) {
         if (err) {
           return cb(err);
         }
-        console.log('result:', JSON.stringify(result, null, 2));
+        var convertedSound = JSON.stringify(result, null, 2);
+        console.log('result:', convertedSound);
         cb(null, result);
+        return convertedSound;
       });
     }
     // [END send_request]

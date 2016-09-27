@@ -27,7 +27,8 @@
     "passport": "^0.3.2",
     "pg": "6.1.0",
     "psql": "0.0.1",
-    "sox": "^0.1.0"
+    "sox": "^0.1.0",
+    "sox-stream": "^1.0.4"
   },
   "devDependencies": {
     "chai": "^3.5.0",
