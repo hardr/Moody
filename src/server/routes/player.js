@@ -8,12 +8,12 @@ router.get('/', function (req, res, next) {
   const searchYoutube = playerController.searchYoutube;
   const renderObject = {};
   renderObject.title = 'Acting All Moody';
-  searchYoutube('King Kunta')
-    .then(function(id) {
-      renderObject.song_id = id;
-      res.render('index', renderObject);
-    });
+  searchYoutube('Fuck Apologies')
+  .then(function(id) {
+    renderObject.song_id = id;
+    res.render('index', renderObject);
   });
+});
 
 //route will return one song within 1 from the score of the analysis text
   router.get('/:score', (req, res, next) => {
