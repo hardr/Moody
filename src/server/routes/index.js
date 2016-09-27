@@ -6,6 +6,7 @@ const beatDetector = require('../controllers/bpm-detector');
 router.get('/', function (req, res, next) {
   const renderObject = {};
   renderObject.title = 'Welcome to Moody';
+  renderObject.song_id = 'hRK7PVJFbS8';
   res.render('index', renderObject);
   });
 
