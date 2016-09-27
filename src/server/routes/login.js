@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const indexController = require('../controllers/index');
-let bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 
 router.get('/', function (req, res, next) {
   const renderObject = {};
