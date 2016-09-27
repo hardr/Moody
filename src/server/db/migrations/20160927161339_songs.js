@@ -2,10 +2,10 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('songs', (t) => {
     t.increments();
-    t.string('song_name');
-    t.string('artist_name');
-    t.string('user_id');
-    t.integer('score');
+    t.string('song_name').notNullable();
+    t.integer('sentiment_rating').notNullable();
+    t.string('youtube_id').notNullable();
+    t.integer('user_id');
   });
 };
 
