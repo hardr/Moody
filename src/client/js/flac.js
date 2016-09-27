@@ -67,7 +67,7 @@
             return this.pushStack(c >= 0 && b > c ? [this[c]] : []);
         },
         end: function() {
-            return this.prevObject || this.constructor(null);
+            return this.prevObject || this.constructor(null );
         },
         push: f,
         sort: c.sort,
@@ -75,9 +75,9 @@
     },
     n.extend = n.fn.extend = function() {
         var a, b, c, d, e, f, g = arguments[0] || {}, h = 1, i = arguments.length, j = !1;
-        for ("boolean" === typeof g && (j = g, g = arguments[h] || {},
+        for ("boolean" == typeof g && (j = g , g = arguments[h] || {},
         h++),
-        "object" === typeof g || n.isFunction(g) || (g = {}),
+        "object" == typeof g || n.isFunction(g) || (g = {}),
         h === i && (g = this,
         h--); i > h; h++)
             if (null != (a = arguments[h]))
@@ -88,7 +88,8 @@
                     f = c && n.isArray(c) ? c : []) : f = c && n.isPlainObject(c) ? c : {},
                     g[b] = n.extend(j, f, d)) : void 0 !== d && (g[b] = d));
         return g
-    },
+    }
+    ,
     n.extend({
         expando: "jQuery" + (m + Math.random()).replace(/\D/g, ""),
         isReady: !0,
