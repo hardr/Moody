@@ -3,10 +3,8 @@ const router = express.Router();
 const indexController = require('../controllers/index');
 const beatDetector = require('../controllers/bpm-detector');
 const bcrypt = require('bcryptjs');
-const google_speech = require('google-speech');
-const googleSpeech = require('google-speech');
-
-
+const googleSpeech = require('../controllers/recognize');
+const WAV_to_FLAC = require('../controllers/WAV_to_FLAC');
 
 router.get('/', function (req, res, next) {
   const renderObject = {};
@@ -16,11 +14,11 @@ router.get('/', function (req, res, next) {
   });
 
   router.post('/getBPM', function (req, res, next) {
-    var googleAudioToText = googleSpeech.googleAudioToText;
-    const detectBPM = beatDetector.detectBPM;
+    const googleAudioToText = googleSpeech.main;
+    const wavToFlac = WAV_to_FLAC.wavToFlac
     const filePath = req.body.recordingAddress;
-    // const filePath = "../test_audio/BeethovensSymphonyNo.9scherzo_vbr.mp3";
-    googleAudioToText(filePath);
+    wavToFlac(filePath);
+
 
     var detectBPMVal = detectBPM(filePath)
     setTimeout(() => {
