@@ -8,10 +8,10 @@ function detectBPM(filePath) {
   createAudioStream(filePath)
   .pipe(bpmSink())
   .on("bpm", function(bpm){
-    bpmArray.push(bpm)
-  })
+    bpmArray.push(bpm);
+  });
   return bpmArray;
-};
+}
 
 // needed to convert mp3 to proper format
 function createAudioStream(filePath) {
