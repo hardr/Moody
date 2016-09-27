@@ -17,7 +17,7 @@
     <h2>Recordings</h2>
     <ul id="recordingslist"></ul>
     <progress style="display: inline-block; text-align: center; width: 100%;" value="0" max="100">Your browser does not support this tool. Upgrade to a modern browser, please.</progress>
-    
+
     <h2>Log</h2>
     <pre id="log"></pre>
   </div>
@@ -30,6 +30,7 @@
 {% endblock %}
 {% block scripts %}
   <script src="../js/recorder.js"></script>
+  <script type="text/javascript" src="/js/return-recording.js"></script>
   <script src="../js/flac.js"></script>
-  <script type="text/javascript" src="/js/bpm-detector.js"></script>
+
 {% endblock %}

@@ -5,6 +5,7 @@ const beatDetector = require('../controllers/bpm-detector');
 const bcrypt = require('bcryptjs');
 const googleSpeech = require('../controllers/recognize');
 const WAV_to_FLAC = require('../controllers/WAV_to_FLAC');
+const path = require('path');
 
 router.get('/', function (req, res, next) {
   const renderObject = {};
@@ -13,17 +14,25 @@ router.get('/', function (req, res, next) {
   res.render('index', renderObject);
   });
 
-  router.post('/getBPM', function (req, res, next) {
-    const googleAudioToText = googleSpeech.main;
-    const wavToFlac = WAV_to_FLAC.wavToFlac
-    const filePath = req.body.recordingAddress;
-    wavToFlac(filePath);
+router.post('/getBPM', function (req, res, next) {
+  const googleAudioToText = googleSpeech.main;
+  // const wavToFlac = WAV_to_FLAC.wavToFlac;
+  // const filePath = req.body.recordingAddress;
+  console.log(__dirname);
+  const filePath = path.join(__dirname,"..", "test_audio", "audio.flac");
+  googleAudioToText(filePath, function(err, result) {
+    if (err) {
+      throw err;
+    }
+    var textJSONResponse = result["results"][0]["alternatives"][0]["transcript"];
+
+    res.json(textJSONResponse)
+  })
+
+    // console.log(json["result"]["results"][0]["alternatives"][0]["transcript"]);
+    // textJSONResponse.push(json["result"]["results"][0]["alternatives"][0]["transcript"]);
 
 
-    var detectBPMVal = detectBPM(filePath)
-    setTimeout(() => {
-      res.json(detectBPMVal);
-    }, 500)
-    });
+  });
 
 module.exports = router;

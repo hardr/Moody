@@ -94,8 +94,9 @@ function main (inputFile, callback) {
           return cb(err);
         }
         var convertedSound = JSON.stringify(result, null, 2);
-        // console.log('result:', convertedSound);
+        console.log('result:', convertedSound);
         cb(null, result);
+        return convertedSound;
       });
     }
     // [END send_request]
@@ -108,8 +109,8 @@ if (module === require.main) {
     console.log('Usage: node recognize <inputFile>');
     process.exit();
   }
-  // var inputFile = process.argv[2];
-  // main(inputFile, console.log);
+  var inputFile = process.argv[2];
+  main(inputFile, console.log);
 }
 // [END run_application]
 // [END app]

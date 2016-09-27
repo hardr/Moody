@@ -23,6 +23,7 @@
     "googleapis": "^13.0.0",
     "knex": "^0.11.10",
     "morgan": "~1.7.0",
+    "node-record-lpcm16": "^0.1.4",
     "nunjucks": "^2.4.2",
     "passport": "^0.3.2",
     "pg": "6.1.0",

@@ -13,7 +13,7 @@
       data: payload
     })
     .done((data) => {
-      alert("Your BPM is " + data);
+      alert("Your Speach Was: " + data);
       console.log(data);
     })
     .fail((err) => {
