@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const indexController = require('../controllers/index');
-const knex = require('knex');
+const bcrypt = require('bcryptjs');
+const knex = require('../db/knex');
+
 
 
 router.get('/', function (req, res, next) {
@@ -17,9 +19,13 @@ router.get('/', function (req, res, next) {
     const email = req.body.email;
     const userName = req.body.userName;
     console.log('post log',userName);
-
-    knex('users').insert({first_name:first_name, last_name: last_name, email: email, userName: userName})
-    .then(res.redirect('/'));
+    knex('users')
+    .insert({first_name:first_name, last_name: last_name, email: email, userName: userName})
+    .then((newUser) => res.redirect('/'))
+    .catch((err) => {
+      console.log(err);
+      res.send('Error');
+    });
   });
 
 

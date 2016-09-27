@@ -1,16 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const indexController = require('../controllers/index');
-const knex = require('knex');
-let bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
+const knex = require('../db/knex');
+
 
 
 router.get('/', function (req, res, next) {
   const renderObject = {};
   renderObject.title = 'Log In - Welcome Back!';
-    res.redirect('index', renderObject);
+    res.render('login',renderObject);
   });
-
-
 
 module.exports = router;
