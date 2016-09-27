@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const indexController = require('../controllers/index');
-const knex = require('knex');
+const knex = require('../db/knex');
 let bcrypt = require('bcryptjs');
 
 
