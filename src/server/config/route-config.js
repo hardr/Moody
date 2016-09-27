@@ -8,11 +8,13 @@
     const routes = require('../routes/index');
     const login = require('../routes/login');
     const signup = require('../routes/signup');
+    const player = require('../routes/player');
 
     // *** register routes *** //
     app.use('/', routes);
     app.use('/login', login);
     app.use('/signup', signup);
+    app.use('/player', player);
 
   };
 
