@@ -87,15 +87,14 @@ function startStop () {
   setTimeout(stopRecording,rawSampleSize);
 }
 function initRemoval () {
-var removerTimer = setTimeout(intRem,rawSampleSize)
+let removerTimer = setTimeout(intRem,rawSampleSize)
 }
 
 function intRem () {
-var removerInterval = setInterval(removeOne,rawSampleSize + 100)
+let removerInterval = setInterval(removeOne,rawSampleSize)
 }
 
 function removeOne () {
-  $('#recordingslist li').first().remove()
-  console.log('remove');
+  $('#recordingslist li').first().remove();
 }
 </script>
