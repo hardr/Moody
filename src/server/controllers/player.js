@@ -7,7 +7,7 @@ function searchYoutube(searchTerm){
     return response.data.items[0].id.videoId;
   })
   .catch(function(err){
-    console.log('ERROR',err)
+    console.log('ERROR',err);
   });
 }
 
