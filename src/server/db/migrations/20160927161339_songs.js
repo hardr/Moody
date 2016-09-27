@@ -5,6 +5,7 @@ exports.up = function(knex, Promise) {
     t.string('song_name').notNullable();
     t.integer('sentiment_rating').notNullable();
     t.string('youtube_id').notNullable();
+    t.integer('user_id');
   });
 };
 
