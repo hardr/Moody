@@ -1,0 +1,9 @@
+{
+  "config": {
+      "encoding":"FLAC",
+      "sample_rate": 16000
+  },
+  "audio": {
+      "uri":"gs://src/server/test_audio/audio.flac"
+  }
+}
