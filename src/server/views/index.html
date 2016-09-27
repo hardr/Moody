@@ -5,11 +5,14 @@
 {% block content %}
 {% include "carousel.html" %}
 {% include "recorderScript.html" %}
+{% include "encoder.html" %}
+
   <div class="container-fluid">
     <h1>Moody.</h1>
     <h2>If you don't like the music, change your tone.</h2>
     <button class="btn-success" onclick="timingQueue(this);">record</button>
-    
+    <input id="com-file-analyzer-fileinput" autofocus="" type="file">
+
 
     <h2>Recordings</h2>
     <ul id="recordingslist"></ul>
@@ -24,5 +27,6 @@
 {% endblock %}
 {% block scripts %}
   <script src="../js/recorder.js"></script>
+  <script src="../js/flac.js"></script>
   <script type="text/javascript" src="/js/bpm-detector.js"></script>
 {% endblock %}
