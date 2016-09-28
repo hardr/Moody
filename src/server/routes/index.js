@@ -7,6 +7,7 @@ const googleSpeech = require('../controllers/recognize');
 const WAV_to_FLAC = require('../controllers/WAV_to_FLAC');
 const path = require('path');
 
+
 router.get('/', function (req, res, next) {
   const renderObject = {};
   renderObject.title = 'Welcome to Moody';
@@ -26,7 +27,6 @@ router.post('/getText', function (req, res, next) {
     }
     var textJSONResponse = result["results"][0]["alternatives"][0]["transcript"];
     // use textJSONResponse for sentiment analysis below
-
     res.json(textJSONResponse)
   })
 });
