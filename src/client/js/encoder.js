@@ -1,4 +1,4 @@
-importScripts('libflac.js');
+importScripts('libflac.js')
 
 var flac_encoder,
 	BUFSIZE = 4096,

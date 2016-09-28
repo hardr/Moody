@@ -4,7 +4,6 @@ const indexController = require('../controllers/index');
 const beatDetector = require('../controllers/bpm-detector');
 const bcrypt = require('bcryptjs');
 const googleSpeech = require('../controllers/recognize');
-const WAV_to_FLAC = require('../controllers/WAV_to_FLAC');
 const path = require('path');
 
 
