@@ -3,29 +3,28 @@
 {% block title %}{% endblock %}
 
 {% block content %}
+
 {% include "carousel.html" %}
+{% include "youtubePlayer.html" %}
+
 {% include "recorderScript.html" %}
 {% include "encoder.html" %}
 
   <div class="container-fluid">
     <h1>Moody.</h1>
+    <h1>{{message}}</h1>
     <h2>If you don't like the music, change your tone.</h2>
     <button class="btn-success" onclick="timingQueue(this);">record</button>
     <input id="com-file-analyzer-fileinput" autofocus="" type="file">
 
-
     <h2>Recordings</h2>
     <ul id="recordingslist"></ul>
     <progress style="display: inline-block; text-align: center; width: 100%;" value="0" max="100">Your browser does not support this tool. Upgrade to a modern browser, please.</progress>
-    
+
     <h2>Log</h2>
     <pre id="log"></pre>
   </div>
   <button type="submit" class="btn btn-warning" id="bpmSubmit">Analyze BPM!</button>
-
-
-  {% include "youtubePlayer.html" %}
-
 
 {% endblock %}
 {% block scripts %}

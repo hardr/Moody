@@ -9,5 +9,5 @@ console.log(ryan);
 console.log(krist);
 
 module.exports = {
-
+  sentiment
 };
