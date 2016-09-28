@@ -4,20 +4,25 @@
 
 {% block content %}
 {% include "carousel.html" %}
-{% include "recorderScript.html" %}
-{% include "encoder.html" %}
 
   <div class="container-fluid">
     <h1>Moody.</h1>
     <h2>If you don't like the music, change your tone.</h2>
     <button class="btn-success" onclick="timingQueue(this);">record</button>
-    <input id="com-file-analyzer-fileinput" autofocus="" type="file">
+
 
 
     <h2>Recordings</h2>
     <ul id="recordingslist"></ul>
-    <progress style="display: inline-block; text-align: center; width: 100%;" value="0" max="100">Your browser does not support this tool. Upgrade to a modern browser, please.</progress>
-    
+    <div class="row">
+				<div class="offset3 span3 text-center"><button class="btn" ng-click="startRecording()" ng-disabled="recording"><i class="icon-circle" ng-class="recordButtonStyle"></i>&nbsp;Start recording</button></div>
+				<div class="span3 text-center"><button class="btn" ng-click="stopRecording()" ng-disabled="!recording"><i class="icon-download-alt"></i>&nbsp;Stop recording</button></div>
+			</div>
+			<div class="row">
+				<div class="span12 text-center" ng-show="recording">
+					<span class="label label-important">Recording...</label>
+				</div>
+			</div>
     <h2>Log</h2>
     <pre id="log"></pre>
   </div>
@@ -29,7 +34,8 @@
 
 {% endblock %}
 {% block scripts %}
-  <script src="../js/recorder.js"></script>
   <script src="../js/flac.js"></script>
+  <script src="../js/recorder.js"></script>
   <script type="text/javascript" src="/js/bpm-detector.js"></script>
+
 {% endblock %}
