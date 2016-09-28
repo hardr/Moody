@@ -14,7 +14,7 @@ router.get('/', function (req, res, next) {
   res.render('index', renderObject);
   });
 
-router.post('/getBPM', function (req, res, next) {
+router.post('/getText', function (req, res, next) {
   const googleAudioToText = googleSpeech.main;
   // const wavToFlac = WAV_to_FLAC.wavToFlac;
   // const filePath = req.body.recordingAddress;
@@ -25,14 +25,10 @@ router.post('/getBPM', function (req, res, next) {
       throw err;
     }
     var textJSONResponse = result["results"][0]["alternatives"][0]["transcript"];
+    // use textJSONResponse for sentiment analysis below
 
     res.json(textJSONResponse)
   })
-
-    // console.log(json["result"]["results"][0]["alternatives"][0]["transcript"]);
-    // textJSONResponse.push(json["result"]["results"][0]["alternatives"][0]["transcript"]);
-
-
-  });
+});
 
 module.exports = router;
