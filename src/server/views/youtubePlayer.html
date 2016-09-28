@@ -1,15 +1,19 @@
 <iframe id="existing-iframe-example"
         width="640" height="360"
-        src="https://www.youtube.com/embed/{{song_id}}?enablejsapi=1"
+        src="//www.youtube.com/embed/{{youtube_id}}?enablejsapi=1"
         frameborder="0"
         style="border: solid 4px #37474F"
+<<<<<<< HEAD
+        data-id="{{song_id}}"
+=======
         data-id= 97
+>>>>>>> master
 ></iframe>
 
 <script type="text/javascript">
   var tag = document.createElement('script');
   tag.id = 'iframe-demo';
-  tag.src = 'https://www.youtube.com/iframe_api';
+  tag.src = '//www.youtube.com/iframe_api';
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 

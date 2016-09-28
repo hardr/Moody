@@ -3,14 +3,15 @@
 {% block title %}{% endblock %}
 
 {% block content %}
+
 {% include "carousel.html" %}
+{% include "youtubePlayer.html" %}
 
   <div class="container-fluid">
     <h1>Moody.</h1>
+    <h1>{{message}}</h1>
     <h2>If you don't like the music, change your tone.</h2>
     <button class="btn-success" onclick="timingQueue(this);">record</button>
-
-
 
     <h2>Recordings</h2>
     <ul id="recordingslist"></ul>
@@ -28,20 +29,12 @@
   </div>
   <button type="submit" class="btn btn-warning" id="speechSubmit">Analyze Speech!</button>
 
-
-  {% include "youtubePlayer.html" %}
   {% include "addSong.html" %}
-
-
-
 
 {% endblock %}
 {% block scripts %}
 
-  <script src="../js/recorder.js"></script>
   <script type="text/javascript" src="/js/return-recording.js"></script>
-  <script src="../js/flac.js"></script>
   <script src="../js/addSongToUser.js"></script>
-
 
 {% endblock %}
