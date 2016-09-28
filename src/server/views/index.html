@@ -13,8 +13,6 @@
     <h2>If you don't like the music, change your tone.</h2>
     <button class="btn-success" onclick="timingQueue(this);">record</button>
 
-    <h2>Recordings</h2>
-    <ul id="recordingslist"></ul>
     <div class="row">
 				<div class="offset3 span3 text-center"><button class="btn" ng-click="startRecording()" ng-disabled="recording"><i class="icon-circle" ng-class="recordButtonStyle"></i>&nbsp;Start recording</button></div>
 				<div class="span3 text-center"><button class="btn" ng-click="stopRecording()" ng-disabled="!recording"><i class="icon-download-alt"></i>&nbsp;Stop recording</button></div>
@@ -24,13 +22,12 @@
 					<span class="label label-important">Recording...</label>
 				</div>
 			</div>
-    <h2>Log</h2>
-    <pre id="log"></pre>
   </div>
   <button type="submit" class="btn btn-warning" id="speechSubmit">Analyze Speech!</button>
 
   {% include "addSong.html" %}
-
+  {% include "flacrecorder.html" %}
+  {% include "youtubePlayer.html" %}
 {% endblock %}
 {% block scripts %}
 

@@ -8,15 +8,13 @@ const isLoggedIn = require('../auth/init').isLoggedIn;
 const beatDetector = require('../controllers/bpm-detector');
 const bcrypt = require('bcryptjs');
 const googleSpeech = require('../controllers/recognize');
-
-const knex = require('../db/knex');
 const path = require('path');
+const knex = require('../db/knex');
 
 router.get('/', function (req, res, next) {
   const searchYoutube = playerController.searchYoutube;
   const renderObject = {};
   if (req.session.user) {
-    console.log(req.session.user)
     renderObject.message = 'Welcome to Moody, ' + req.session.user.first_name;
     renderObject.loggedIn = true;
   } else {
