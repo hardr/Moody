@@ -1,0 +1,52 @@
+{% extends "_base.html" %} {% block title %}{% endblock %} {% block css %}
+<link rel="stylesheet" href="/css/user.css"> {% endblock %} {% block content %}
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col-md-12 userRow">
+            <h2>{{welcome}}</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                          <h3>Song Played</h3>
+                        </th>
+                        <th>
+                          <h3>Song Artist</h3>
+                        </th>
+                        <th>
+                          <h3>Song Image</h3>
+                        </th>
+                        <th>
+                          <h3>Sentiment Rating</h3>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for song in songs%}
+                    <tr>
+                        <td>
+                          <h4>{{song.song_name}}</h4>
+                        </td>
+                        <td>
+                          <h4>{{song.song_artist}}</h4>
+                        </td>
+                        <td>
+                          <img src={{song.song_img}} alt="song_img" class="songImg" />
+                        </td>
+                        <td>
+                          <h4>{{song.sentiment_rating}}</h4>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %} {% block scripts %} {% endblock %}

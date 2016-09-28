@@ -1,357 +1,242 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Recorder = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-"use strict";
+importScripts('libflac.js');
 
-module.exports = require("./recorder").Recorder;
+var flac_encoder,
+	BUFSIZE = 4096,
+	CHANNELS = 1,
+	SAMPLERATE = 44100,
+	COMPRESSION = 5,
+	BPS = 16,
+	flac_ok = 1,
+	flacLength = 0,
+	flacBuffers = [],
+	WAVFILE = false,
+	INIT = false,
+	wavLength = 0,
+	wavBuffers = [];
 
-},{"./recorder":2}],2:[function(require,module,exports){
-'use strict';
-
-var _createClass = (function () {
-    function defineProperties(target, props) {
-        for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-        }
-    }return function (Constructor, protoProps, staticProps) {
-        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-    };
-})();
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Recorder = undefined;
-
-var _inlineWorker = require('inline-worker');
-
-var _inlineWorker2 = _interopRequireDefault(_inlineWorker);
-
-function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : { default: obj };
+function write_callback_fn(buffer, bytes){
+	flacBuffers.push(buffer);
+	flacLength += buffer.byteLength;
 }
 
-function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-        throw new TypeError("Cannot call a class as a function");
-    }
+function write_wav(buffer){
+	wavBuffers.push(buffer);
+	wavLength += buffer.length;
 }
 
-var Recorder = exports.Recorder = (function () {
-    function Recorder(source, cfg) {
-        var _this = this;
+self.onmessage = function(e) {
 
-        _classCallCheck(this, Recorder);
+	switch (e.data.cmd) {
 
-        this.config = {
-            bufferLen: 4096,
-            numChannels: 2,
-            mimeType: 'audio/wav'
-        };
-        this.recording = false;
-        this.callbacks = {
-            getBuffer: [],
-            exportWAV: []
-        };
+	case 'save_as_wavfile':
 
-        Object.assign(this.config, cfg);
-        this.context = source.context;
-        this.node = (this.context.createScriptProcessor || this.context.createJavaScriptNode).call(this.context, this.config.bufferLen, this.config.numChannels, this.config.numChannels);
+		if (INIT == false){
+			WAVFILE = true;
+		}
+		break;
 
-        this.node.onaudioprocess = function (e) {
-            if (!_this.recording) return;
+	case 'init':
 
-            var buffer = [];
-            for (var channel = 0; channel < _this.config.numChannels; channel++) {
-                buffer.push(e.inputBuffer.getChannelData(channel));
-            }
-            _this.worker.postMessage({
-                command: 'record',
-                buffer: buffer
-            });
-        };
+		if (WAVFILE){
+			// save as WAV-file
 
-        source.connect(this.node);
-        this.node.connect(this.context.destination); //this should not be necessary
+            // WAV-FILE
+            // create our WAV file header
+            var buffer = new ArrayBuffer(44);
+            var view = new DataView(buffer);
+            // RIFF chunk descriptor
+            writeUTFBytes(view, 0, 'RIFF');
 
-        var self = {};
-        this.worker = new _inlineWorker2.default(function () {
-            var recLength = 0,
-                recBuffers = [],
-                sampleRate = undefined,
-                numChannels = undefined;
+            // set file size at the end
+            writeUTFBytes(view, 8, 'WAVE');
+            // FMT sub-chunk
+            writeUTFBytes(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            // stereo (2 channels)
+            view.setUint16(22, 1, true);
+            view.setUint32(24, e.data.config.samplerate, true);
+            view.setUint32(28, e.data.config.samplerate * 2 /* only one channel, else: 4 */, true);
+            view.setUint16(32, 4, true);
+            view.setUint16(34, 16, true);
+            // data sub-chunk
+            writeUTFBytes(view, 36, 'data');
 
-            self.onmessage = function (e) {
-                switch (e.data.command) {
-                    case 'init':
-                        init(e.data.config);
-                        break;
-                    case 'record':
-                        record(e.data.buffer);
-                        break;
-                    case 'exportWAV':
-                        exportWAV(e.data.type);
-                        break;
-                    case 'getBuffer':
-                        getBuffer();
-                        break;
-                    case 'clear':
-                        clear();
-                        break;
-                }
-            };
 
-            function init(config) {
-                sampleRate = config.sampleRate;
-                numChannels = config.numChannels;
-                initBuffers();
-            }
+        	// DUMMY file length (set real value on export)
+            view.setUint32(4, 10, true);
+        	// DUMMY data chunk length (set real value on export)
+            view.setUint32(40, 10, true);
 
-            function record(inputBuffer) {
-                for (var channel = 0; channel < numChannels; channel++) {
-                    recBuffers[channel].push(inputBuffer[channel]);
-                }
-                recLength += inputBuffer[0].length;
-            }
+            // store WAV header
+            wavBuffers.push(new Uint8Array(buffer));
 
-            function exportWAV(type) {
-                var buffers = [];
-                for (var channel = 0; channel < numChannels; channel++) {
-                    buffers.push(mergeBuffers(recBuffers[channel], recLength));
-                }
-                var interleaved = undefined;
-                if (numChannels === 2) {
-                    interleaved = interleave(buffers[0], buffers[1]);
-                } else {
-                    interleaved = buffers[0];
-                }
-                var dataview = encodeWAV(interleaved);
-                var audioBlob = new Blob([dataview], { type: type });
+        } else {
 
-                self.postMessage({ command: 'exportWAV', data: audioBlob });
-            }
+			// using FLAC
 
-            function getBuffer() {
-                var buffers = [];
-                for (var channel = 0; channel < numChannels; channel++) {
-                    buffers.push(mergeBuffers(recBuffers[channel], recLength));
-                }
-                self.postMessage({ command: 'getBuffer', data: buffers });
-            }
+			if (!e.data.config) {
+				e.data.config = { bps: BPS, channels: CHANNELS, samplerate: SAMPLERATE, compression: COMPRESSION };
+			}
 
-            function clear() {
-                recLength = 0;
-                recBuffers = [];
-                initBuffers();
-            }
+			e.data.config.channels = e.data.config.channels ? e.data.config.channels : CHANNELS;
+			e.data.config.samplerate = e.data.config.samplerate ? e.data.config.samplerate : SAMPLERATE;
+			e.data.config.bps = e.data.config.bps ? e.data.config.bps : BPS;
+			e.data.config.compression = e.data.config.compression ? e.data.config.compression : COMPRESSION;
 
-            function initBuffers() {
-                for (var channel = 0; channel < numChannels; channel++) {
-                    recBuffers[channel] = [];
-                }
-            }
+			////
+			COMPRESSION = e.data.config.compression;
+			BPS = e.data.config.bps;
+			SAMPLERATE = e.data.config.samplerate;
+			CHANNELS = e.data.config.channels;
+			////
 
-            function mergeBuffers(recBuffers, recLength) {
-                var result = new Float32Array(recLength);
-                var offset = 0;
-                for (var i = 0; i < recBuffers.length; i++) {
-                    result.set(recBuffers[i], offset);
-                    offset += recBuffers[i].length;
-                }
-                return result;
-            }
+			flac_encoder = Flac.init_libflac(SAMPLERATE, CHANNELS, BPS, COMPRESSION, 0);
+			////
+			if (flac_encoder != 0){
+				var status_encoder = Flac.init_encoder_stream(flac_encoder, write_callback_fn);
+				flac_ok &= (status_encoder == 0);
 
-            function interleave(inputL, inputR) {
-                var length = inputL.length + inputR.length;
-                var result = new Float32Array(length);
+				console.log("flac init     : " + flac_ok);//DEBUG
+				console.log("status encoder: " + status_encoder);//DEBUG
 
-                var index = 0,
-                    inputIndex = 0;
+				INIT = true;
+			} else {
+				console.error("Error initializing the encoder.");
+			}
+		}
+		break;
 
-                while (index < length) {
-                    result[index++] = inputL[inputIndex];
-                    result[index++] = inputR[inputIndex];
-                    inputIndex++;
-                }
-                return result;
-            }
+	case 'encode':
 
-            function floatTo16BitPCM(output, offset, input) {
-                for (var i = 0; i < input.length; i++, offset += 2) {
-                    var s = Math.max(-1, Math.min(1, input[i]));
-                    output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
-                }
-            }
+		if (WAVFILE){
 
-            function writeString(view, offset, string) {
-                for (var i = 0; i < string.length; i++) {
-                    view.setUint8(offset + i, string.charCodeAt(i));
-                }
-            }
+			// WAVE - PCM
+			write_wav(e.data.buf);
 
-            function encodeWAV(samples) {
-                var buffer = new ArrayBuffer(44 + samples.length * 2);
-                var view = new DataView(buffer);
+		} else {
+			// FLAC
+			var buf_length = e.data.buf.length;
+			var buffer_i32 = new Uint32Array(buf_length);
+			var view = new DataView(buffer_i32.buffer);
+			var volume = 1;
+			var index = 0;
+			for (var i = 0; i < buf_length; i++){
+				view.setInt32(index, (e.data.buf[i] * (0x7FFF * volume)), true);
+				index += 4;
+			}
 
-                /* RIFF identifier */
-                writeString(view, 0, 'RIFF');
-                /* RIFF chunk length */
-                view.setUint32(4, 36 + samples.length * 2, true);
-                /* RIFF type */
-                writeString(view, 8, 'WAVE');
-                /* format chunk identifier */
-                writeString(view, 12, 'fmt ');
-                /* format chunk length */
-                view.setUint32(16, 16, true);
-                /* sample format (raw) */
-                view.setUint16(20, 1, true);
-                /* channel count */
-                view.setUint16(22, numChannels, true);
-                /* sample rate */
-                view.setUint32(24, sampleRate, true);
-                /* byte rate (sample rate * block align) */
-                view.setUint32(28, sampleRate * 4, true);
-                /* block align (channel count * bytes per sample) */
-                view.setUint16(32, numChannels * 2, true);
-                /* bits per sample */
-                view.setUint16(34, 16, true);
-                /* data chunk identifier */
-                writeString(view, 36, 'data');
-                /* data chunk length */
-                view.setUint32(40, samples.length * 2, true);
+			var flac_return = Flac.encode_buffer_pcm_as_flac(flac_encoder, buffer_i32, CHANNELS, buf_length);
+			if (flac_return != true){
+				console.log("Error: encode_buffer_pcm_as_flac returned false. " + flac_return);
+			}
+		}
+		break;
 
-                floatTo16BitPCM(view, 44, samples);
+	case 'finish':
 
-                return view;
-            }
-        }, self);
+		var data;
+		if (WAVFILE){
 
-        this.worker.postMessage({
-            command: 'init',
-            config: {
-                sampleRate: this.context.sampleRate,
-                numChannels: this.config.numChannels
-            }
-        });
+			data = exportMonoWAV(wavBuffers, wavLength);
 
-        this.worker.onmessage = function (e) {
-            var cb = _this.callbacks[e.data.command].pop();
-            if (typeof cb == 'function') {
-                cb(e.data.data);
-            }
-        };
-    }
+		} else {
 
-    _createClass(Recorder, [{
-        key: 'record',
-        value: function record() {
-            this.recording = true;
-        }
-    }, {
-        key: 'stop',
-        value: function stop() {
-            this.recording = false;
-        }
-    }, {
-        key: 'clear',
-        value: function clear() {
-            this.worker.postMessage({ command: 'clear' });
-        }
-    }, {
-        key: 'getBuffer',
-        value: function getBuffer(cb) {
-            cb = cb || this.config.callback;
-            if (!cb) throw new Error('Callback not set');
+			flac_ok &= Flac.FLAC__stream_encoder_finish(flac_encoder);
+			console.log("flac finish: " + flac_ok);//DEBUG
+			data = exportFlacFile(flacBuffers, flacLength, mergeBuffersUint8);
 
-            this.callbacks.getBuffer.push(cb);
+		}
 
-            this.worker.postMessage({ command: 'getBuffer' });
-        }
-    }, {
-        key: 'exportWAV',
-        value: function exportWAV(cb, mimeType) {
-            mimeType = mimeType || this.config.mimeType;
-            cb = cb || this.config.callback;
-            if (!cb) throw new Error('Callback not set');
+		clear();
 
-            this.callbacks.exportWAV.push(cb);
+		self.postMessage({cmd: 'end', buf: data});
+		INIT = false;
+		break;
+	}
+};
 
-            this.worker.postMessage({
-                command: 'exportWAV',
-                type: mimeType
-            });
-        }
-    }], [{
-        key: 'forceDownload',
-        value: function forceDownload(blob, filename) {
-            var url = (window.URL || window.webkitURL).createObjectURL(blob);
-            var link = window.document.createElement('a');
-            link.href = url;
-            link.download = filename || 'output.wav';
-            var click = document.createEvent("Event");
-            click.initEvent("click", true, true);
-            link.dispatchEvent(click);
-        }
-    }]);
+function exportFlacFile(recBuffers, recLength){
 
-    return Recorder;
-})();
+	//convert buffers into one single buffer
+	var samples = mergeBuffersUint8(recBuffers, recLength);
 
-exports.default = Recorder;
+//	var audioBlob = new Blob([samples], { type: type });
+	var the_blob = new Blob([samples]);
+	return the_blob;
 
-},{"inline-worker":3}],3:[function(require,module,exports){
-"use strict";
+}
 
-module.exports = require("./inline-worker");
-},{"./inline-worker":4}],4:[function(require,module,exports){
-(function (global){
-"use strict";
+function exportMonoWAV(buffers, length){
+	//buffers: array with
+	//  buffers[0] = header information (with missing length information)
+	//  buffers[1] = Float32Array object (audio data)
+	//  ...
+	//  buffers[n] = Float32Array object (audio data)
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var dataLength = length * 2;
+	var buffer = new ArrayBuffer(44 + dataLength);
+	var view = new DataView(buffer);
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+	//copy WAV header data into the array buffer
+	var header = buffers[0];
+	var len = header.length;
+	for(var i=0; i < len; ++i){
+		view.setUint8(i, header[i]);
+	}
 
-var WORKER_ENABLED = !!(global === global.window && global.URL && global.Blob && global.Worker);
+	//add file length in header
+    view.setUint32(4, 32 + dataLength, true);
+	//add data chunk length in header
+    view.setUint32(40, dataLength, true);
 
-var InlineWorker = (function () {
-  function InlineWorker(func, self) {
-    var _this = this;
+    //write audio data
+	floatTo16BitPCM(view, 44, buffers);
 
-    _classCallCheck(this, InlineWorker);
+	return new Blob([view]);
+}
 
-    if (WORKER_ENABLED) {
-      var functionBody = func.toString().trim().match(/^function\s*\w*\s*\([\w\s,]*\)\s*{([\w\W]*?)}$/)[1];
-      var url = global.URL.createObjectURL(new global.Blob([functionBody], { type: "text/javascript" }));
+function writeUTFBytes(view, offset, string){
+	var lng = string.length;
+	for (var i = 0; i < lng; ++i){
+		view.setUint8(offset + i, string.charCodeAt(i));
+	}
+}
 
-      return new global.Worker(url);
-    }
+function mergeBuffersUint8(channelBuffer, recordingLength){
+	var result = new Uint8Array(recordingLength);
+	var offset = 0;
+	var lng = channelBuffer.length;
+	for (var i = 0; i < lng; i++){
+		var buffer = channelBuffer[i];
+		result.set(buffer, offset);
+		offset += buffer.length;
+	}
+	return result;
+}
 
-    this.self = self;
-    this.self.postMessage = function (data) {
-      setTimeout(function () {
-        _this.onmessage({ data: data });
-      }, 0);
-    };
+function floatTo16BitPCM(output, offset, inputBuffers){
 
-    setTimeout(function () {
-      func.call(self);
-    }, 0);
-  }
+	var input, jsize = inputBuffers.length, isize, i, s;
 
-  _createClass(InlineWorker, {
-    postMessage: {
-      value: function postMessage(data) {
-        var _this = this;
+	//first entry is header information (already used in exportMonoWAV),
+	//  rest is Float32Array-entries -> ignore header entry
+	for (var j = 1; j < jsize; ++j){
+		input = inputBuffers[j];
+		isize = input.length;
+		for (i = 0; i < isize; ++i, offset+=2){
+			s = Math.max(-1, Math.min(1, input[i]));
+			output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+		}
+	}
+}
 
-        setTimeout(function () {
-          _this.self.onmessage({ data: data });
-        }, 0);
-      }
-    }
-  });
-
-  return InlineWorker;
-})();
-
-module.exports = InlineWorker;
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[1])(1)
-});
+/*
+ * clear recording buffers
+ */
+function clear(){
+	flacBuffers.splice(0, flacBuffers.length);
+	flacLength = 0;
+	wavBuffers.splice(0, wavBuffers.length);
+	wavLength = 0;
+}
