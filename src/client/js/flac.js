@@ -31,12 +31,12 @@ recorderApp.controller('RecorderController', [ '$scope' , function($scope) {
     //your API key from Google Console for Web Speech Recognition service (secret!!!)
     //  for more details on how to obtain an API key see e.g.
     //  http://codeabitwiser.com/2014/03/google-speech-recognition-api-information-guidelines/
-    $scope._google_api_key = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+    $scope._google_api_key = '';
     $scope._asr_alternatives = 20;
 
     //do not changes these: this "detects" if a key for the Google Speech API is set or not
     // (and updates page accordingly, i.e. enable/disable check-box for sending audio to ASR service):
-    var __def_key = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+    var __def_key = 'd98bd4c85612b5df8ec9e3464d791ab9119bf432';
     $scope.isNotASRCapable = $scope._google_api_key === __def_key;
 
 	$scope.recordaswave = function(isUseWavFormat) {
