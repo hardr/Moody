@@ -189,7 +189,8 @@ recorderApp.controller('RecorderController', [ '$scope' , function($scope) {
 	//create A-element for data BLOB and trigger download
 	$scope.forceDownload = function(blob, filename){
 		var url = (window.URL || window.webkitURL).createObjectURL(blob);
-		var link = window.document.createElement('a');
+    console.log(url);
+		var link = $('.linkDiv').append(`<a href=${url}>Link<a>`);
 		link.href = url;
 		link.download = filename || 'output.flac';
 		//NOTE: FireFox requires a MouseEvent (in Chrome a simple Event would do the trick)
