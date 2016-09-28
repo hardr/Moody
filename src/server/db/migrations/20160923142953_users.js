@@ -2,14 +2,14 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('users', (t) => {
       t.increments();
-      t.string('userName');
-      t.string('password');
-      t.string('first_name');
-      t.string('last_name');
+      t.string('user_name').notNullable();
+      t.string('password').notNullable();
+      t.string('first_name').notNullable();
+      t.string('last_name').notNullable();
       t.string('email').notNullable();
-      t.string('song_played');
-      t.timestamp('created');
-      t.string('song_img');
+      t.boolean('admin').defaultTo('false');
+      t.timestamp('acct_incept').defaultTo(knex.fn.now());
+
     });
 
 };
