@@ -1,0 +1,35 @@
+{% extends "_base.html" %} {% block title %}{% endblock %} {% block css %}
+<link rel="stylesheet" href="/css/user.css"> {% endblock %} {% block content %}
+<div class="container-fluid">
+  <div class="row ">
+    <div class="col-md-12 userRow">
+      <h1>Moody.</h1>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th><h3>Song Played</h3></th>
+            <th><h3>Moody Date</h3></th>
+            <th><h3>Song Image</h3></th>
+          </tr>
+        </thead>
+        <tbody>
+          {%for user in users%}
+          <tr>
+            <td><h4>{{user.song_played}}</h4></td>
+            <td><h4>{{user.created}}</h4></td>
+            <td><img src={{user.song_img}} alt="song_img"  class="songImg"/></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+{% endblock %}
+{% block scripts %}
+{% endblock %}

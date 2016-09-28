@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  $('#bpmSubmit').on('click', function (event) {
+  $('#speechSubmit').on('click', function (event) {
     event.preventDefault();
     console.log("analyze is clicked");
     const recordingAddress = $('#recordingslist li a').attr('href');
@@ -9,11 +9,11 @@
     }
     $.ajax({
       type: 'POST',
-      url: `/getBPM`,
+      url: `/getText`,
       data: payload
     })
     .done((data) => {
-      alert("Your BPM is " + data);
+      alert("Your Speech Was: " + data);
       console.log(data);
     })
     .fail((err) => {

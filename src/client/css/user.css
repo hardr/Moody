@@ -1,0 +1,16 @@
+.userRow{
+height: 500px;
+}
+.footer-custom {
+  margin-bottom: -50px;
+}
+th,
+td {
+  text-align: center;
+}
+.table > tbody > tr > td {
+     vertical-align: middle;
+}
+.songImg{
+  height: 100px;
+}
