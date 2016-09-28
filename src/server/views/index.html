@@ -3,17 +3,16 @@
 {% block title %}{% endblock %}
 
 {% block content %}
+
 {% include "carousel.html" %}
+{% include "youtubePlayer.html" %}
 
   <div class="container-fluid">
     <h1>Moody.</h1>
+    <h1>{{message}}</h1>
     <h2>If you don't like the music, change your tone.</h2>
     <button class="btn-success" onclick="timingQueue(this);">record</button>
 
-
-
-
-    
     <div class="row">
 				<div class="offset3 span3 text-center"><button class="btn" ng-click="startRecording()" ng-disabled="recording"><i class="icon-circle" ng-class="recordButtonStyle"></i>&nbsp;Start recording</button></div>
 				<div class="span3 text-center"><button class="btn" ng-click="stopRecording()" ng-disabled="!recording"><i class="icon-download-alt"></i>&nbsp;Stop recording</button></div>
@@ -26,12 +25,13 @@
   </div>
   <button type="submit" class="btn btn-warning" id="speechSubmit">Analyze Speech!</button>
 
+  {% include "addSong.html" %}
   {% include "flacrecorder.html" %}
   {% include "youtubePlayer.html" %}
-  {% endblock %}
-  {% block scripts %}
+{% endblock %}
+{% block scripts %}
 
   <script type="text/javascript" src="/js/return-recording.js"></script>
-
+  <script src="../js/addSongToUser.js"></script>
 
 {% endblock %}

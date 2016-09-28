@@ -8,17 +8,15 @@
     const routes = require('../routes/index');
     const login = require('../routes/login');
     const signup = require('../routes/signup');
-    const player = require('../routes/player');
+    const logout = require('../routes/logout');
     const user = require('../routes/user');
-
 
     // *** register routes *** //
     app.use('/', routes);
     app.use('/login', login);
     app.use('/signup', signup);
-    app.use('/player', player);
+    app.use('/logout', logout);
     app.use('/user', user);
-
 
   };
 
