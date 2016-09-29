@@ -15,13 +15,14 @@
 // const adjScore = sentInput.score/numOfWords + 5;
 
 
-$('#stop-btn').on('click', function (e) {
+$('#speechSubmit').on('click', function (e) {
   e.preventDefault();
-  let testString = 'how bad will this string register';
-  console.log('testing hit it');
+  console.log("analyze is clicked");
+  const $textResults = $('#final_span').text();
+
   $.ajax({
     type: 'GET',
-    url: `/string/${testString}/`,
+    url: `/string/${$textResults}/`,
     success: function(result) {
       console.log(result.rows[0].youtube_id);
       const youtube_id = result.rows[0].youtube_id;

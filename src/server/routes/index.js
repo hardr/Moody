@@ -44,9 +44,7 @@ router.get('/string/:string', (req, res, next) => {
 
 router.post('/getText', function (req, res, next) {
   const googleAudioToText = googleSpeech.main;
-
   const filePath = req.body.recordingAddress
-
   // const filePath = path.join(__dirname,"..", "test_audio", "audio.flac");
   googleAudioToText(filePath, function(err, result) {
     if (err) {

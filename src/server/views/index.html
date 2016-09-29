@@ -3,7 +3,6 @@
 {% block title %}{% endblock %}
 
 {% block content %}
-
   <div class="row">
     <div class="col-md-9">
       {% if player %}
@@ -13,7 +12,7 @@
       {% endif %}
     </div>
     <div class="col-md-3">
-      <div></div>
+      {% include "speechRecog.html" %}
     </div>
   </div>
 
@@ -32,6 +31,7 @@
 
 {% endblock %}
 {% block scripts %}
+  <script type="text/javascript" src="/js/speechRecog.js"></script>
   <script type="text/javascript" src="/js/return-recording.js"></script>
   <script src="../js/addSongToUser.js"></script>
 {% endblock %}
