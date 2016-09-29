@@ -8,8 +8,6 @@ const bcrypt = require('bcryptjs');
 const googleSpeech = require('../controllers/recognize');
 const path = require('path');
 const knex = require('../db/knex');
-const http = require('http').Server(router);
-const io = require('socket.io')(http);
 const sentiment = require('sentiment');
 
 
@@ -57,15 +55,7 @@ router.get('/string/:string', (req, res, next) => {
 
 router.post('/getText', function (req, res, next) {
   const googleAudioToText = googleSpeech.main;
-<<<<<<< HEAD
-  // const wavToFlac = WAV_to_FLAC.wavToFlac;
   const filePath = req.body.recordingAddress
-  // .replace("blob:", "");
-  console.log(filePath);
-=======
-  console.log(__dirname);
-  // const filePath ='https://archive.org/download/jfks19610427/jfk_1961_0427_press.flac';
->>>>>>> ad0739794514a2a1acf794ba49cb78d9ec56d159
   // const filePath = path.join(__dirname,"..", "test_audio", "audio.flac");
   googleAudioToText(filePath, function(err, result) {
     if (err) {
@@ -77,16 +67,6 @@ router.post('/getText', function (req, res, next) {
   });
 });
 
-<<<<<<< HEAD
-
-=======
-io.on('connection', function(socket){
-  console.log('a user connected');
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
-});
-
 function returnSentimentAverage(string) {
   let sentInput = sentiment(string);
   let len = string.split(" ");
@@ -94,6 +74,5 @@ function returnSentimentAverage(string) {
   const adjScore = sentInput.score/numOfWords + 5;
   return adjScore;
 };
->>>>>>> ad0739794514a2a1acf794ba49cb78d9ec56d159
 
 module.exports = router;

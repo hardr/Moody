@@ -4,7 +4,15 @@
 
 {% block content %}
 
-{% include "carousel.html" %}
+<div class="row">
+  <div class="col-md-9">
+    {% include "carousel.html" %}
+  </div>
+  <div class="col-md-3">
+    {% include "speechRecog.html" %}
+
+  </div>
+</div>
 {% include "youtubePlayer.html" %}
 
   <div class="container-fluid">
@@ -38,37 +46,7 @@
   {% include "flacrecorder.html" %}
 {% endblock %}
 {% block scripts %}
+  <script type="text/javascript" src="/js/speechRecog.js"></script>
   <script type="text/javascript" src="/js/return-recording.js"></script>
   <script src="../js/addSongToUser.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.6/socket.io.min.js"></script>
-  <script src="/js/sockets/socket.io-stream.js"></script>
-  <script>
-  $(function() {
-    var socket = io.connect('/blob-stream');
-
-    $('#linkDiv').change(function(e) {
-      console.log(e.target);
-      var file = e.target.files[0];
-      var stream = ss.createStream();
-
-      // upload a file to the server.
-      ss(socket).emit('file', stream, {size: file.size});
-      ss.createBlobReadStream(file).pipe(stream);
-
-      var blobStream = ss.createBlobReadStream(file);
-      var size = 0;
-
-      blobStream.on('data', function(chunk) {
-        size += chunk.length;
-        console.log(Math.floor(size / file.size * 100) + '%');
-        // -> e.g. '42%'
-      });
-
-      blobStream.pipe(stream);
-    });
-  });
-
-
-  </script>
-
 {% endblock %}
