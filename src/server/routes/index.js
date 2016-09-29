@@ -15,6 +15,7 @@ const sentiment = require('sentiment');
 router.get('/', function (req, res, next) {
   const searchYoutube = playerController.searchYoutube;
   const renderObject = {};
+  renderObject.youtube_id = 'hRK7PVJFbS8';
   if (req.session.user) {
     renderObject.message = 'Welcome to Moody, ' + req.session.user.first_name;
     renderObject.loggedIn = true;
@@ -22,36 +23,24 @@ router.get('/', function (req, res, next) {
     renderObject.message = 'Welcome to Moody, Stranger';
     renderObject.loggedIn = false;
   }
-  // renderObject.user = req.session.user.username
-  searchYoutube('hello vevo')
-  .then(function(id) {
-    renderObject.youtube_id = id;
-    // renderObject.song_id = change this;
-    console.log(renderObject.youtube_id);
-    res.render('index', renderObject);
-  })
-  .catch(function(err) {
-    res.send(err);
-  });
+  res.render('index', renderObject);
 });
 
 //route will return one song within 1 from the string of the analysis text
 router.get('/string/:string', (req, res, next) => {
-  const string = req.params.string;
+  const searchYoutube = playerController.searchYoutube;
   const renderObject = {};
-  renderObject.score = returnSentimentAverage(string);
-
-  console.log(renderObject.score);
-
-  //the greater than sign needs to be changed to a less than before we go live
-  renderObject.data = knex.raw(`select * from songs where abs(songs.sentiment_rating - ${renderObject.score}) < 1 limit 1`)
+  const string = req.params.string;
+  let score = returnSentimentAverage(string);
+  let sentScore = knex.raw(`select * from songs where abs(songs.sentiment_rating - ${score}) < 1 limit 1`)
   .then((results) => {
-    console.log(results.rows);
-    res.send(results.rows);
+    res.json(results);
   })
-  .catch((err) => {
-    res.send (err);
-  });
+  .catch(function(err) {
+    res.send(err);
+    });
+    console.log('route',renderObject);
+  // res.json(renderObject);
 });
 
 router.post('/getText', function (req, res, next) {
