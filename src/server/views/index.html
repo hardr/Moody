@@ -13,9 +13,16 @@
     <h2>If you don't like the music, change your tone.</h2>
     <div class="linkDiv"></div>
     <div class="row">
+      <button id="stop-btn">Testing</button>
 				<div class="offset3 span3 text-center">
-          <button class="btn" ng-click="startRecording()" ng-disabled="recording"><i class="icon-circle" ng-class="recordButtonStyle"></i>&nbsp;Start recording</button></div>
-				  <div class="span3 text-center"><button class="btn" ng-click="stopRecording()" ng-disabled="!recording"><i class="icon-download-alt"></i>&nbsp;Stop recording</button>
+          <button class="btn" ng-click="startRecording()" ng-disabled="recording">
+            <i class="icon-circle" ng-class="recordButtonStyle"></i>&nbsp;Start recording
+          </button>
+        </div>
+				  <div class="span3 text-center">
+            <button class="btn" ng-click="stopRecording()" ng-disabled="!recording">
+              <i class="icon-download-alt"></i>&nbsp;Stop recording
+            </button>
         </div>
 			</div>
 			<div class="row">
@@ -28,10 +35,8 @@
 
   {% include "addSong.html" %}
   {% include "flacrecorder.html" %}
-  {% include "youtubePlayer.html" %}
 {% endblock %}
 {% block scripts %}
-
   <script type="text/javascript" src="/js/return-recording.js"></script>
   <script src="../js/addSongToUser.js"></script>
 
