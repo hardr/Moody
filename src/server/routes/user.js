@@ -25,12 +25,13 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/addSong', function (req, res, next) {
-  console.log(req.body);
-  const song_id = req.body.song_id;
+  const song_id = req.session.song.song_id;
   const user_id = req.session.user.id;
+  console.log("user id is " + song_id);
+  console.log("song id is " + user_id);
   knex('users_songs')
   .insert({
-    user_id: song_id,
+    user_id: user_id,
     song_id: song_id
   })
   .returning('*')
