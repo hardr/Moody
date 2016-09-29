@@ -4,8 +4,17 @@
 
 {% block content %}
 
-{% include "carousel.html" %}
-{% include "youtubePlayer.html" %}
+  <div class="row">
+    <div class="col-md-9">
+      {% if player %}
+        {% include "youtubePlayer.html" %}
+      {% else %}
+        {% include "carousel.html" %}
+      {% endif %}
+    </div>
+    <div class="col-md-3">
+    </div>
+  </div>
 
   <div class="container-fluid">
     <h1>Moody.</h1>
