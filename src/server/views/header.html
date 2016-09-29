@@ -16,7 +16,7 @@
       <div class="collapse navbar-collapse" id="navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
           {% if loggedIn %}
-            <li><a href="/search"><span class="glyphicon glyphicon-user"></span>{{req.session.user.first_name}}  Account</a></li>
+            <li><a href="/user"><span class="glyphicon glyphicon-user"></span>{{req.session.user.first_name}}  Account</a></li>
             <li><a href="/logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
           {% else %}
             <li><a href="/signup"><span class="glyphicon glyphicon-pencil"></span> Sign Up</a></li>
