@@ -23,11 +23,15 @@ $('#stop-btn').on('click', function (e) {
     type: 'GET',
     url: `/string/${testString}/`,
     success: function(result) {
-      console.log(result);
-      console.log('hit it');
+      console.log(result.rows[0].youtube_id);
+      const youtube_id = result.rows[0].youtube_id;
+
+      console.log('uid',youtube_id);
+      $('.carousel-inner').html('<iframe id="existing-iframe-example" width="640" height="360" src="//www.youtube.com/embed/{{youtube_id}}?enablejsapi=1" frameborder="0" style="border: solid 4px #37474F" data-id="{{song_id}}"></iframe>');
+
     },
     error: function(error) {
-      console.log(error);
+      console.log(':(');
     }
   });
 });
