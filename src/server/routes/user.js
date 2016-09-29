@@ -5,9 +5,10 @@ const path = require('path');
 const knex = require('../db/knex');
 
 
-router.get('/', function (req, res, next) {
+router.get('/:id', function (req, res, next) {
   const renderObject = {};
-  const userID = req.session.user.id;
+  // const userID = req.session.user.id;
+  const userID = req.params.id;
   renderObject.title = 'User Profile';
   renderObject.loggedIn = true;
   knex('users')
