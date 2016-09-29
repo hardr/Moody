@@ -1,3 +1,4 @@
+
 (function() {
   'use strict';
   $('#speechSubmit').on('click', function (event) {
@@ -6,7 +7,7 @@
     const recordingAddress = $('#recordingslist li a').attr('href');
     var payload = {
       recordingAddress: recordingAddress
-    }
+    };
     $.ajax({
       type: 'POST',
       url: `/getText`,

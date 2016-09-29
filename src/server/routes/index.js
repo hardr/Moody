@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
-
 const indexController = require('../controllers/index');
 const playerController = require('../controllers/player');
 const isLoggedIn = require('../auth/init').isLoggedIn;
-
 const beatDetector = require('../controllers/bpm-detector');
 const bcrypt = require('bcryptjs');
 const googleSpeech = require('../controllers/recognize');
 const path = require('path');
 const knex = require('../db/knex');
+const http = require('http').Server(router);
+const io = require('socket.io')(http);
+const sentiment = require('sentiment');
 
 router.get('/', function (req, res, next) {
   const searchYoutube = playerController.searchYoutube;
@@ -34,36 +35,53 @@ router.get('/', function (req, res, next) {
   });
 });
 
-//route will return one song within 1 from the score of the analysis text
-router.get('/score/:score', (req, res, next) => {
-  const score = parseInt(req.params.score);
+//route will return one song within 1 from the string of the analysis text
+router.get('/string/:string', (req, res, next) => {
+  const string = req.params.string;
   const renderObject = {};
-  console.log(score);
+  renderObject.score = returnSentimentAverage(string);
+
+  console.log(renderObject.score);
+
   //the greater than sign needs to be changed to a less than before we go live
-  renderObject.data = knex.raw(`select * from songs where abs(songs.score - ${score}) > 1 limit 1`)
+  renderObject.data = knex.raw(`select * from songs where abs(songs.sentiment_rating - ${renderObject.score}) < 1 limit 1`)
   .then((results) => {
     console.log(results.rows);
     res.send(results.rows);
   })
-  .catch((err) => {res.send (err);
+  .catch((err) => {
+    res.send (err);
   });
-  // knex.raw(select * from songs where min @(songs.score - score))
 });
 
 router.post('/getText', function (req, res, next) {
   const googleAudioToText = googleSpeech.main;
-  // const wavToFlac = WAV_to_FLAC.wavToFlac;
-  // const filePath = req.body.recordingAddress;
   console.log(__dirname);
-  const filePath = path.join(__dirname,"..", "test_audio", "audio.flac");
+  // const filePath ='https://archive.org/download/jfks19610427/jfk_1961_0427_press.flac';
+  // const filePath = path.join(__dirname,"..", "test_audio", "audio.flac");
   googleAudioToText(filePath, function(err, result) {
     if (err) {
       throw err;
     }
     var textJSONResponse = result["results"][0]["alternatives"][0]["transcript"];
     // use textJSONResponse for sentiment analysis below
-    res.json(textJSONResponse)
-  })
+    res.json(textJSONResponse);
+  });
 });
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+});
+
+function returnSentimentAverage(string) {
+  let sentInput = sentiment(string);
+  let len = string.split(" ");
+  let numOfWords = len.length;
+  const adjScore = sentInput.score/numOfWords + 5;
+  return adjScore;
+};
 
 module.exports = router;
