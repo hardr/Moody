@@ -5,10 +5,11 @@ const path = require('path');
 const knex = require('../db/knex');
 
 
-router.get('/:id', function (req, res, next) {
+router.get('/', function (req, res, next) {
   const renderObject = {};
-  const userID = req.params.id;
+  const userID = req.session.user.id;
   renderObject.title = 'User Profile';
+  renderObject.loggedIn = true;
   knex('users')
   .where('users.id', userID)
   .select('*')
@@ -16,9 +17,9 @@ router.get('/:id', function (req, res, next) {
   .join('songs', 'users_songs.song_id', 'songs.id')
   .then((results) => {
     renderObject.songs = results;
-    renderObject.title = `User Profile: ${results[0].user_name}`;
-    renderObject.welcome = `Welcome Back, ${results[0].first_name} ${results[0].last_name}!`
-    console.log(results);
+    console.log('ze results', results);
+    renderObject.title = 'User Profile: ' + req.session.user.first_name;
+    renderObject.welcome = 'Welcome Back, ' + req.session.user.first_name + '!';
     res.render('user', renderObject);
   })
 });

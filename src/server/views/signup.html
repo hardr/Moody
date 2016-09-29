@@ -3,6 +3,9 @@
 {% block title %}{% endblock %}
 
 {% block content %}
+{% if message %}
+  {{message}}
+{% endif %}
 <form class="form-horizontal" method="POST" action="/signup" id="addUser">
   <div class="form-group row">
     <label name="first_name" class="col-xs-2 col-form-label">First Name</label>
