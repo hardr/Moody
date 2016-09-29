@@ -51,5 +51,8 @@
     "run-sequence": "^1.2.2",
     "tiny-lr": "^0.2.1"
   },
-  "name": "Moody"
+  "name": "Moody",
+  "engines": {
+    "node": "6.6.0"
+  }
 }
