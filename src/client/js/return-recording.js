@@ -1,3 +1,4 @@
+
 (function() {
   'use strict';
   $('#speechSubmit').on('click', function (event) {
@@ -7,7 +8,6 @@
     var payload = {
       recordingAddress: recordingAddress
     }
-    console.log(recordingAddress);
     $.ajax({
       type: 'POST',
       url: `/getText`,

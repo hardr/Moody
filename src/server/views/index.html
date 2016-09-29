@@ -14,8 +14,17 @@
     <button class="btn-success" onclick="timingQueue(this);">record</button>
     <div class="linkDiv" id="linkDiv"></div>
     <div class="row">
-				<div class="offset3 span3 text-center"><button class="btn" ng-click="startRecording()" ng-disabled="recording"><i class="icon-circle" ng-class="recordButtonStyle"></i>&nbsp;Start recording</button></div>
-				<div class="span3 text-center"><button class="btn" ng-click="stopRecording()" ng-disabled="!recording"><i class="icon-download-alt"></i>&nbsp;Stop recording</button></div>
+      <button id="stop-btn">Testing</button>
+				<div class="offset3 span3 text-center">
+          <button class="btn" ng-click="startRecording()" ng-disabled="recording">
+            <i class="icon-circle" ng-class="recordButtonStyle"></i>&nbsp;Start recording
+          </button>
+        </div>
+				  <div class="span3 text-center">
+            <button class="btn" ng-click="stopRecording()" ng-disabled="!recording">
+              <i class="icon-download-alt"></i>&nbsp;Stop recording
+            </button>
+        </div>
 			</div>
 			<div class="row">
 				<div class="span12 text-center" ng-show="recording">
@@ -29,7 +38,6 @@
   {% include "flacrecorder.html" %}
 {% endblock %}
 {% block scripts %}
-
   <script type="text/javascript" src="/js/return-recording.js"></script>
   <script src="../js/addSongToUser.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.6/socket.io.min.js"></script>
