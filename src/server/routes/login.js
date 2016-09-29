@@ -17,19 +17,44 @@ router.get('/', function (req, res, next) {
 router.post('/', function (req, res, next) {
   console.log('req.body', req.body);
   const loginUsername = req.body.user_name;
-  const loginPassword = bcrypt.hashSync(req.body.password, salt);
+  const loginPassword = req.body.password;
 
-  console.log('route pass', existingUser(loginUsername, loginPassword));
-
-  if (existingUser(loginUsername, loginPassword) === 1) {
-    res.redirect('/');
-  } else if (existingUser(loginUsername, loginPassword) === 0){
-    const renderObject = {};
-    renderObject.message = 'Wrong password! ;-)';
-    res.render('login', renderObject);
+  if (!loginUsername || !loginPassword) {
+    let result = {};
+    result.message = 'Nice try.';
+    res.render('login', result);
   } else {
-    res.redirect('/signup');
+    knex('users')
+    .then(users => {
+      let user = users.filter(user => user.user_name === loginUsername)[0];
+      if (!user) {
+        res.redirect('/signup');
+      } else {
+        if (bcrypt.compareSync(loginPassword, user.password)) {
+          req.session.user = user;
+          res.redirect('/');
+        } else {
+          let result = {};
+          result.message = 'It just might be your password, but who knows?';
+          res.render('login', result);
+        }
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    })
   }
+  // const loginPassword = bcrypt.hashSync(req.body.password, salt);
+  // console.log('route pass', existingUser(loginUsername, loginPassword));
+  // if (existingUser(loginUsername, loginPassword) === 1) {
+  //   res.redirect('/');
+  // } else if (existingUser(loginUsername, loginPassword) === 0){
+  //   const renderObject = {};
+  //   renderObject.message = 'Wrong password! ;-)';
+  //   res.render('login', renderObject);
+  // } else {
+  //   res.redirect('/signup');
+  // }
 });
 
 module.exports = router;
