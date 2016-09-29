@@ -10,7 +10,6 @@ const path = require('path');
 const knex = require('../db/knex');
 const sentiment = require('sentiment');
 
-
 router.get('/', function (req, res, next) {
   const searchYoutube = playerController.searchYoutube;
   const renderObject = {};
@@ -37,21 +36,17 @@ router.get('/string/:string', (req, res, next) => {
   })
   .catch(function(err) {
     res.send(err);
-    });
-    console.log('route',renderObject);
-  // res.json(renderObject);
+  });
 });
 
 router.post('/getText', function (req, res, next) {
   const googleAudioToText = googleSpeech.main;
-  const filePath = req.body.recordingAddress
-  // const filePath = path.join(__dirname,"..", "test_audio", "audio.flac");
+  const filePath = req.body.recordingAddress;
   googleAudioToText(filePath, function(err, result) {
     if (err) {
       throw err;
     }
     var textJSONResponse = result["results"][0]["alternatives"][0]["transcript"];
-    // use textJSONResponse for sentiment analysis below
     res.json(textJSONResponse);
   });
 });
@@ -62,6 +57,5 @@ function returnSentimentAverage(string) {
   let numOfWords = len.length;
   const adjScore = sentInput.score/numOfWords + 5;
   return adjScore;
-};
-
+}
 module.exports = router;
