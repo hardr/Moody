@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const server = require('../app');
 const indexController = require('../controllers/index');
 const playerController = require('../controllers/player');
 const isLoggedIn = require('../auth/init').isLoggedIn;
@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 const googleSpeech = require('../controllers/recognize');
 const path = require('path');
 const knex = require('../db/knex');
+
 
 router.get('/', function (req, res, next) {
   const searchYoutube = playerController.searchYoutube;
@@ -53,9 +54,10 @@ router.get('/score/:score', (req, res, next) => {
 router.post('/getText', function (req, res, next) {
   const googleAudioToText = googleSpeech.main;
   // const wavToFlac = WAV_to_FLAC.wavToFlac;
-  // const filePath = req.body.recordingAddress;
-  console.log(__dirname);
-  const filePath = path.join(__dirname,"..", "test_audio", "audio.flac");
+  const filePath = req.body.recordingAddress
+  // .replace("blob:", "");
+  console.log(filePath);
+  // const filePath = path.join(__dirname,"..", "test_audio", "audio.flac");
   googleAudioToText(filePath, function(err, result) {
     if (err) {
       throw err;
@@ -65,5 +67,7 @@ router.post('/getText', function (req, res, next) {
     res.json(textJSONResponse)
   })
 });
+
+
 
 module.exports = router;
