@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const indexController = require('../controllers/index');
 const bcrypt = require('bcryptjs');
+const salt = bcrypt.genSaltSync(10);
 const knex = require('../db/knex');
 
+const existingUser = require('../auth/init').existingUser;
 
 
 router.get('/', function (req, res, next) {
@@ -13,32 +15,21 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-  const loginUsername = req.body.userName;
-  const loginPassword = req.body.password;
-  let hash = bcrypt.hashSync(password, salt);
+  console.log('req.body', req.body);
+  const loginUsername = req.body.user_name;
+  const loginPassword = bcrypt.hashSync(req.body.password, salt);
 
-  knex('users')
-  .insert({
-    first_name:first_name,
-    last_name: last_name,
-    email: email,
-    userName: userName,
-    password: hash
-  })
-  .returning('*')
-  .then((newUser) => {
-    req.session.user = {
-      id: newUser[0].id,
-      username: newUser[0].userName,
-      password: newUser[0].password,
-      first_name: newUser[0].first_name
-    };
+  console.log('route pass', existingUser(loginUsername, loginPassword));
+
+  if (existingUser(loginUsername, loginPassword) === 1) {
     res.redirect('/');
-  })
-  .catch((err) => {
-    console.log(err);
-    res.send('Error');
-  });
+  } else if (existingUser(loginUsername, loginPassword) === 0){
+    const renderObject = {};
+    renderObject.message = 'Wrong password! ;-)';
+    res.render('login', renderObject);
+  } else {
+    res.redirect('/signup');
+  }
 });
 
 module.exports = router;

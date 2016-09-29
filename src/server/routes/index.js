@@ -16,7 +16,6 @@ router.get('/', function (req, res, next) {
   const searchYoutube = playerController.searchYoutube;
   const renderObject = {};
   if (req.session.user) {
-    console.log(req.session.user)
     renderObject.message = 'Welcome to Moody, ' + req.session.user.first_name;
     renderObject.loggedIn = true;
   } else {
