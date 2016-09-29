@@ -11,7 +11,8 @@
     <h1>Moody.</h1>
     <h1>{{message}}</h1>
     <h2>If you don't like the music, change your tone.</h2>
-    <div class="linkDiv"></div>
+    <button class="btn-success" onclick="timingQueue(this);">record</button>
+    <div class="linkDiv" id="linkDiv"></div>
     <div class="row">
       <button id="stop-btn">Testing</button>
 				<div class="offset3 span3 text-center">
@@ -39,5 +40,35 @@
 {% block scripts %}
   <script type="text/javascript" src="/js/return-recording.js"></script>
   <script src="../js/addSongToUser.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.6/socket.io.min.js"></script>
+  <script src="/js/sockets/socket.io-stream.js"></script>
+  <script>
+  $(function() {
+    var socket = io.connect('/blob-stream');
+
+    $('#linkDiv').change(function(e) {
+      console.log(e.target);
+      var file = e.target.files[0];
+      var stream = ss.createStream();
+
+      // upload a file to the server.
+      ss(socket).emit('file', stream, {size: file.size});
+      ss.createBlobReadStream(file).pipe(stream);
+
+      var blobStream = ss.createBlobReadStream(file);
+      var size = 0;
+
+      blobStream.on('data', function(chunk) {
+        size += chunk.length;
+        console.log(Math.floor(size / file.size * 100) + '%');
+        // -> e.g. '42%'
+      });
+
+      blobStream.pipe(stream);
+    });
+  });
+
+
+  </script>
 
 {% endblock %}

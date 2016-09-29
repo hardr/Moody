@@ -4,10 +4,10 @@
   $('#speechSubmit').on('click', function (event) {
     event.preventDefault();
     console.log("analyze is clicked");
-    const recordingAddress = $('#recordingslist li a').attr('href');
+    const recordingAddress = $('#linkDiv a').attr('href');
     var payload = {
       recordingAddress: recordingAddress
-    };
+    }
     $.ajax({
       type: 'POST',
       url: `/getText`,
