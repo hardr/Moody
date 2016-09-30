@@ -31,7 +31,7 @@ exports.seed = function(knex, Promise) {
       }),
       knex('songs').insert({
       song_name: 'lost you',
-      song_artist: 'Twin Shadow',
+      song_artist: 'Zed\s Dead',
       sentiment_rating: 7,
       youtube_id: 'VJm7IPrBmLY',
       song_img: catsArray[3]

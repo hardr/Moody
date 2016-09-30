@@ -10,6 +10,7 @@
   const flash = require('connect-flash');
   const morgan = require('morgan');
   const nunjucks = require('nunjucks');
+  // var favicon = require('serve-favicon');
 
   // *** view folders *** //
   const viewFolders = [
@@ -43,6 +44,7 @@
     }));
     app.use(flash());
     app.use(express.static(path.join(__dirname, '..', '..', 'client')));
+    // app.use(favicon(__dirname + '/public/favicon.ico'));
 
   };
 
