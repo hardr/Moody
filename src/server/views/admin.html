@@ -24,6 +24,12 @@
                         <td>
                           <h4>{{song.sentiment_rating}}</h4>
                         </td>
+                        <td class="filterable-cell">
+                          <div class="delete">
+                            <button class="btn btn-lg btn-danger delete-btn" data-table="songs" data-id={{song.id}} id="removeSong">&#x2716;
+                            </button>
+                          </div>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -50,6 +56,12 @@
                         <td>
                           <h4>{{user.admin}}</h4>
                         </td>
+                        <td class="filterable-cell">
+                          <div class="delete">
+                            <button class="btn btn-lg btn-danger delete-btn" data-table="users" data-id={{user.id}} id="removeUser">&#x2716;
+                            </button>
+                          </div>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -63,4 +75,8 @@
 
 
 
-{% endblock %} {% block scripts %} {% endblock %}
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="/js/adminDelete.js"></script>
+{% endblock %}

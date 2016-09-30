@@ -79,7 +79,28 @@ router.delete('/deleteSong', function (req, res, next) {
   .then((result) => {
     res.status(200).json({
       status: 'success',
-      message: `${results} is gone!`
+      message: `${result} is gone!`
+    });
+  })
+  .catch((err) => {
+    res.status(400).json({
+      status: 'failure',
+      message: 'entry not found'
+    });
+    res.send('Error');
+  });
+});
+
+router.delete('/adminDelete', function (req, res, next) {
+  const delete_id = parseInt(req.body.id);
+  const delete_table = req.body.table;
+  knex(delete_table)
+  .where('id', delete_id)
+  .del()
+  .then((result) => {
+    res.status(200).json({
+      status: 'success',
+      message: `${result} is gone!`
     });
   })
   .catch((err) => {
