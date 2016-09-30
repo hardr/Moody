@@ -1,23 +1,24 @@
 (function() {
-  console.log("delete song sanity check");
+  console.log("admin delete insanity");
   'use strict';
   $(document).on('click', '.delete-btn', function (event) {
     event.preventDefault();
-    console.log("delete song is clicked");
+    console.log("delete admin");
     const $this = $(this);
-    const $song_uuid = $this.attr("data-id");
-    console.log("the song id is " + $song_uuid);
+    const $table = $this.attr("data-table");
+    const $id = $this.attr("data-id");
     var payload = {
-      song_uuid: $song_uuid
+      table: $table,
+      id: $id
     }
     $.ajax({
       type: 'DELETE',
-      url: `/user/deleteSong`,
+      url: `/user/adminDelete`,
       data: payload
     })
     .done((data) => {
       console.log(data);
-      alert("Song was removed from your account");
+      alert("Removed");
       location.reload();
     })
     .fail((err) => {
