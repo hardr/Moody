@@ -19,7 +19,6 @@ $('#speechSubmit').on('click', function (e) {
   e.preventDefault();
   console.log("analyze is clicked");
   const $textResults = $('#final_span').text();
-
   $.ajax({
     type: 'GET',
     url: `/string/${$textResults}/`,
