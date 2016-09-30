@@ -10,6 +10,7 @@ router.get('/', function (req, res, next) {
   const userID = req.session.user.id;
   renderObject.title = 'User Profile';
   renderObject.loggedIn = true;
+
   if (req.session.user.admin) {
     knex('users')
     .select('user_name', 'id', 'admin')
@@ -48,12 +49,11 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/addSong', function (req, res, next) {
-  console.log(req.body);
   const song_id = req.session.song.song_id;
   const user_id = req.session.user.id;
   knex('users_songs')
   .insert({
-    user_id: song_id,
+    user_id: user_id,
     song_id: song_id
   })
   .returning('*')
@@ -70,4 +70,24 @@ router.post('/addSong', function (req, res, next) {
   });
 });
 
+router.delete('/deleteSong', function (req, res, next) {
+  const song_uuid = req.body.song_uuid;
+  const user_id = req.session.user.id;
+  knex('users_songs')
+  .where('uuid', song_uuid)
+  .del()
+  .then((result) => {
+    res.status(200).json({
+      status: 'success',
+      message: `${results} is gone!`
+    });
+  })
+  .catch((err) => {
+    res.status(400).json({
+      status: 'failure',
+      message: 'entry not found'
+    });
+    res.send('Error');
+  });
+});
 module.exports = router;
