@@ -30,7 +30,7 @@ router.get('/string/:string', (req, res, next) => {
   const renderObject = {};
   const string = req.params.string;
   let score = returnSentimentAverage(string);
-  let sentScore = knex.raw(`select * from songs where abs(songs.sentiment_rating - ${score}) < 1 limit 1`)
+  let sentScore = knex.raw(`select * from songs where abs(songs.sentiment_rating - ${score}) < .5 limit 1`)
   .then((results) => {
     req.session.song = {
       song_id: results.rows[0].id,
