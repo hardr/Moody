@@ -13,9 +13,7 @@ a:hover {
 }
 .button {
   background: -webkit-linear-gradient(top,#008dfd 0,#0370ea 100%);
-  border: 1px solid #076bd2;
   border-radius: 3px;
-  color: #fff;
   display: none;
   font-size: 13px;
   font-weight: bold;
@@ -71,7 +69,11 @@ a:hover {
   min-height: 150px;
 }
 #start_button {
-  border: 0;
   background-color:transparent;
+  opacity: .2;
+  border-radius: 20px;
+  padding: 5px;
   padding: 0;
+border: none;
+background: none;
 }

@@ -6,6 +6,7 @@ const salt = bcrypt.genSaltSync(10);
 const knex = require('../db/knex');
 const existingUser = require('../auth/init').existingUser;
 
+
 router.get('/', function (req, res, next) {
   const renderObject = {};
   renderObject.title = 'Log In - Welcome Back!';

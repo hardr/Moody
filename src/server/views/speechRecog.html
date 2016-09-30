@@ -11,7 +11,7 @@
   <br>
   <div class="row" id="info">
     <h3 id="info_start">Click on the microphone icon and speak your mind!</h3>
-    <p id="info_speak_now">Speak now.</p>
+    <h3 id="info_speak_now">Speak now.</h3>
     <p id="info_no_speech">No speech was detected. You may need to adjust your
       <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
         microphone settings</a>.</p>
@@ -28,9 +28,10 @@
        version 25 or later.</p>
   </div>
   <br>
-  <div  class="row" class="right">
+  <div  class="row" style="border:none; background-color:transparent;" class="right">
+    <label id="record_label">Click the Orb to Record.</label>
     <div class="col-md-4 col-md-offset-4">
-      <button id="start_button" onclick="startButton(event)">
+      <button id="start_button" style="border:none; background-color:transparent;" onclick="startButton(event)">
       <img id="start_img" src="/gif/mic.gif" alt="Start">
     </button>
     </div>
@@ -41,6 +42,7 @@
     <span id="" class="interim"></span>
     <p>
   </div>
+  <button type="submit" class="btn btn-warning" style="margin:15px; "id="speechSubmit">Analyze Speech!</button> {% include "addSong.html" %}
   <div class="center">
     <div class="sidebyside" style="text-align:right">
     </div>
