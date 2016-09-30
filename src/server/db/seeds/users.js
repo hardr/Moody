@@ -17,7 +17,7 @@ exports.seed = function(knex, Promise) {
       }
       fakeUsersArray.push(knex('users').insert({
         user_name: 'admin',
-        password: 'password',
+        password: '$2a$10$FAUzH4FoZTlW.hQVPA87NOAgB3NjDGGRf.rRaSlkyVJrCA9WCG4JG',
         first_name: 'Kristjan',
         last_name: 'Gannon',
         email: 'gannonk08@gmail.com',

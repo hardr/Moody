@@ -1,0 +1,66 @@
+{% extends "_base.html" %} {% block title %}{% endblock %} {% block css %}
+<link rel="stylesheet" href="/css/user.css"> {% endblock %} {% block content %}
+<div class="container-fluid">
+  <h2>{{welcome}}</h2>
+    <div class="row ">
+        <div class="col-md-6 adminSongs">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                          <h3>Song Played</h3>
+                        </th>
+                        <th>
+                          <h3>Sentiment Rating</h3>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for song in songs%}
+                    <tr>
+                        <td>
+                          <h4>{{song.song_name}}</h4>
+                        </td>
+                        <td>
+                          <h4>{{song.sentiment_rating}}</h4>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6 adminUsers">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                          <h3>User</h3>
+                        </th>
+                        <th>
+                          <h3>Admin</h3>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>
+                          <h4>{{user.user_name}}</h4>
+                        </td>
+                        <td>
+                          <h4>{{user.admin}}</h4>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %} {% block scripts %} {% endblock %}
