@@ -3,26 +3,34 @@
 {% block title %}{% endblock %}
 
 {% block content %}
-<form class="form-horizontal" method="POST" action="/login" id="loginUser">
-  <div class="form-group row">
-    <label for="user_name" name="user_name" class="col-xs-2 col-form-label">Username</label>
-    <div class="col-xs-10">
-      <input class="form-control" type="text" placeholder="MadEyeMoody" id="loginUsername" name="user_name" autofocus>
-    </div>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <form class="form-horizontal" method="POST" action="/login" id="loginUser">
+        <div class="form-group row">
+          <div class="row">
+            <label for="user_name" name="user_name" class="col-xs-2 col-form-label"><h3>Username</h3></label>
+          </div>
+          <div class="row">
+            <input class="form-control" type="text" placeholder="MadEyeMoody" id="loginUsername" name="user_name" autofocus>
+          </div>
+        </div>
+      <div class="form-group row">
+        <div class="row">
+          <label for="password" class="col-xs-2 col-form-label"><h3>Password</h3></label>
+        </div>
+        <div class="row">
+            <input class="form-control" type="password" placeholder="Password" id="loginPassword" name="password">
+        </div>
+        {% if message %}
+          {{message}}
+        {% endif %}
+      </div>
+      <div class="col-sm-offset-2 col-sm-8">
+        <button type="submit" class="btn btn-default login">Login</button>
+      </div>
+    </form>
   </div>
-  <div class="form-group row">
-    <label for="password" class="col-xs-2 col-form-label">Password</label>
-    <div class="col-xs-10">
-      <input class="form-control" type="password" placeholder="Password" id="loginPassword" name="password">
-    </div>
-    {% if message %}
-      {{message}}
-    {% endif %}
-  </div>
-  <div class="col-sm-offset-2 col-sm-8">
-    <button type="submit" class="btn btn-default login">Login</button>
-  </div>
-</form>
+</div>
 <footer class='footer footer-custom text-center'>
   Moody Music
     <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span> 2016

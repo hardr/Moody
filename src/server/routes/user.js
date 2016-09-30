@@ -111,4 +111,27 @@ router.delete('/adminDelete', function (req, res, next) {
     res.send('Error');
   });
 });
+
+// router.post('/addSong/admin', function (req, res, next) {
+//   const song_id = req.session.song.song_id;
+//   const user_id = req.session.user.id;
+//   knex('users_songs')
+//   .insert({
+//     user_id: user_id,
+//     song_id: song_id
+//   })
+//   .returning('*')
+//   .then((results) => {
+//     if (results.length) {
+//       res.status(200);
+//     }
+//     else {
+//       res.status(500);
+//     }
+//   })
+//   .catch((err) => {
+//     res.send('Error');
+//   });
+// });
+
 module.exports = router;
