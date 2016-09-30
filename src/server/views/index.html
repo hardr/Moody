@@ -1,8 +1,6 @@
 {% extends "_base.html" %}
 {% block title %}{% endblock %}
 {% block content %}
-<div id="wrap">
-  <div class="container-fluid clear-top" id="main">
     <div class="row">
       <div class="col-md-9">
         {% if player %}
@@ -24,13 +22,8 @@
           {% include "addSong.html" %}
         </div>
       </div>
-    </div>
-</div>
-<footer class='footer footer-custom text-center'>
-  Moody Music
-    <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span> 2016
-  </nav>
-</footer>
+
+
 {% endblock %}
 {% block scripts %}
   <script type="text/javascript" src="/js/speechRecog.js"></script>
