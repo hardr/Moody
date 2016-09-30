@@ -17,7 +17,6 @@ router.get('/', function (req, res, next) {
   .join('songs', 'users_songs.song_id', 'songs.id')
   .then((results) => {
     renderObject.songs = results;
-    console.log('ze results', results);
     renderObject.title = 'User Profile: ' + req.session.user.first_name;
     renderObject.welcome = 'Welcome Back, ' + req.session.user.first_name + '!';
     res.render('user', renderObject);
@@ -27,8 +26,6 @@ router.get('/', function (req, res, next) {
 router.post('/addSong', function (req, res, next) {
   const song_id = req.session.song.song_id;
   const user_id = req.session.user.id;
-  console.log("user id is " + song_id);
-  console.log("song id is " + user_id);
   knex('users_songs')
   .insert({
     user_id: user_id,
@@ -48,4 +45,24 @@ router.post('/addSong', function (req, res, next) {
   });
 });
 
+router.delete('/deleteSong', function (req, res, next) {
+  const song_uuid = req.body.song_uuid;
+  const user_id = req.session.user.id;
+  knex('users_songs')
+  .where('uuid', song_uuid)
+  .del()
+  .then((result) => {
+    res.status(200).json({
+      status: 'success',
+      message: `${results} is gone!`
+    });
+  })
+  .catch((err) => {
+    res.status(400).json({
+      status: 'failure',
+      message: 'entry not found'
+    });
+    res.send('Error');
+  });
+});
 module.exports = router;
